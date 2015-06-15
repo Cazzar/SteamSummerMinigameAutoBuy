@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Steam Summer Sale AutoBuy
+// @name         Steam Summer Sale AutoBuy and Misc Tools
 // @namespace    http://cazzar.net/
-// @version      0.2.1
+// @version      0.3.0
 // @description  Auto Buy - Implementation of https://github.com/SteamDatabase/steamSummerMinigame/pull/124/
 // @author       Cazzar
 // @match        *://steamcommunity.com/minigame/towerattack*
@@ -12,9 +12,12 @@
 // ==/UserScript==
 
 (function(w) {
-	
+var costEffectiveColour = '#E1B21E';
 var currentClickRate = 20; //Make sure this is the same as the auto clicker.
 	
+//DO NOT MODIFY
+var hilighted_upgrades = [];
+
 var UPGRADE_TYPES = {
 	"ARMOR": 0,
 	"DPS": 1,
@@ -31,12 +34,14 @@ function FirstRun() {} //do Nothing
 
 function MainLoop() {
 	purchaseUpgrades();
+	updateUpgradeCostEffectiveIndicator();
 }
 
 function s() {
     return g_Minigame.m_CurrentScene;
 }
 
+//https://github.com/SteamDatabase/steamSummerMinigame/pull/124/
 function purchaseUpgrades() {
 	// This values elemental too much because best element lanes are not focused(0.578)
 	var oddsOfElement = 1 - (0.75 * 0.75 * 0.75);
@@ -154,6 +159,66 @@ function purchaseUpgrades() {
 		console.log("Buying " + upgrades[bestUpgradeForDamage].name);
 		buyUpgrade(bestUpgradeForDamage);
 	}
+}
+
+var UPGRADES = {
+	"LIGHT_ARMOR":0,
+	"AUTO_CANNON": 1,
+	"CLICK_UPGRADE": 2,
+};
+
+//https://github.com/SteamDatabase/steamSummerMinigame/pull/143
+function updateUpgradeCostEffectiveIndicator() {
+
+    // upg_map will contain the most cost effctive upgrades for each type
+	var upg_map = {};
+	Object.keys(UPGRADES).forEach(function(key) {
+		upg_map[UPGRADES[key]] = {
+			idx: -1,
+			gold_per_mult: 0
+		};
+	});
+
+	var p_upg = s().m_rgPlayerUpgrades;
+
+    // loop over all upgrades and find the most cost effective ones
+	s().m_rgTuningData.upgrades.forEach(function(upg, idx) {
+		if(upg.type in upg_map) {
+
+			var cost = s().GetUpgradeCost(idx) / parseFloat(upg.multiplier);
+
+			if(upg_map[upg.type].idx == -1 || upg_map[upg.type].cost_per_mult > cost) {
+				if(upg.hasOwnProperty('required_upgrade') && s().GetUpgradeLevel(upg.required_upgrade) < upg.required_upgrade_level) { return; }
+
+				upg_map[upg.type].idx = idx;
+				upg_map[upg.type].cost_per_mult = cost;
+			}
+		}
+	});
+
+    var hilight = Object.keys(upg_map).map(function(k) { return upg_map[k].idx; });
+
+    var match = true;
+    for(var i = 0; i < hilight.length; i++ ) {
+        if(hilight[i] !== hilighted_upgrades[i]) {
+            match = false;
+            break;
+        }
+    }
+
+    if(!match) {
+        hilighted_upgrades = hilight;
+
+        // clear all currently hilighted
+        [].forEach.call(document.querySelectorAll('[id^="upgr_"] .info'),
+                function(elm) { elm.style = {} ;});
+
+        [].forEach.call(document.querySelectorAll(hilight.map(function(i) {
+                return "#upgr_" + i + " .info";
+            })
+            .join(",")),
+        function(elm) { elm.style.setProperty('color', costEffectiveColour, 'important'); });
+    }
 }
 
 if(w.AutoBuy_Timer) {
