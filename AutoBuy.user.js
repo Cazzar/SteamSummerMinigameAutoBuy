@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Summer Sale AutoBuy
 // @namespace    http://cazzar.net/
-// @version      0.2.0
+// @version      0.2.1
 // @description  Auto Buy - Implementation of https://github.com/SteamDatabase/steamSummerMinigame/pull/124/
 // @author       Cazzar
 // @match        *://steamcommunity.com/minigame/towerattack*
@@ -111,9 +111,9 @@ function purchaseUpgrades() {
 			case UPGRADE_TYPES.ELEMENTAL_EARTH:
 				break;
 			case UPGRADE_TYPES.LUCKY_SHOT:
-				if (upgrade.multiplier * dpc * critChance * avgClicksPerSecond / upgradeCost > highestUpgradeValueForDamage) { // dmg increase per moneys
+				if (upgrade.multiplier * dpc * critChance * currentClickRate / upgradeCost > highestUpgradeValueForDamage) { // dmg increase per moneys
 					bestUpgradeForDamage = i;
-					highestUpgradeValueForDamage = upgrade.multiplier * dpc * critChance * avgClicksPerSecond / upgradeCost;
+					highestUpgradeValueForDamage = upgrade.multiplier * dpc * critChance * currentClickRate / upgradeCost;
 				}
 				break;
 			default:
