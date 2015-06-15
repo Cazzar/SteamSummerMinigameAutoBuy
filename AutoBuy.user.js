@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         My Fancy New Userscript
 // @namespace    http://cazzar.net/
-// @version      0.1
+// @version      0.2.0
 // @description  Auto Buy - Implementation of https://github.com/SteamDatabase/steamSummerMinigame/pull/124/
 // @author       Cazzar
 // @match        *://steamcommunity.com/minigame/towerattack*
@@ -12,6 +12,8 @@
 // ==/UserScript==
 
 (function(w) {
+	
+var currentClickRate = 20; //Make sure this is the same as the auto clicker.
 	
 var UPGRADE_TYPES = {
 	"ARMOR": 0,
