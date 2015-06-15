@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         My Fancy New Userscript
+// @name         Steam Summer Sale AutoBuy
 // @namespace    http://cazzar.net/
 // @version      0.2.0
 // @description  Auto Buy - Implementation of https://github.com/SteamDatabase/steamSummerMinigame/pull/124/
