@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Summer Sale AutoBuy and Misc Tools
 // @namespace    https://github.com/cazzar/SteamSummerMinigameAutoBuy/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Auto consume badge points
 // @author       Cazzar
 // @match        *://steamcommunity.com/minigame/towerattack*
@@ -62,7 +62,7 @@ function useAutoBadgePurchase() {
 	// id = ability
 	// ratio = how much of the remaining badges to spend
 	var abilityPriorityList = [
-		{ id: ABILITIES.WORMHOLE,   ratio: 0.9 },
+		{ id: ABILITIES.WORMHOLE,   ratio: 0.5 },
 		{ id: ABILITIES.LIKE_NEW,   ratio: 1 },
 		{ id: ABILITIES.CRIT,       ratio: 1 },
 		{ id: ABILITIES.TREASURE,   ratio: 1 },
