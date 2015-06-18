@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam Summer Sale AutoBuy and Misc Tools
 // @namespace    https://github.com/cazzar/SteamSummerMinigameAutoBuy/
-// @version      0.3.0
+// @version      1.0.0
 // @description  Auto consume badge points
 // @author       Cazzar
 // @match        *://steamcommunity.com/minigame/towerattack*
